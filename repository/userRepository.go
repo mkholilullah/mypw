@@ -26,7 +26,3 @@ func (r *UserRepositoryImpl) GetById(id int) (*domain.User, error) {
 func (r *UserRepositoryImpl) Create(user *domain.User) error {
     return r.DB.Create(user).Error
 }
-
-// func NewUserRepository(db *sql.DB) domain.UserRepository {
-//     return &UserRepositoryI{DB: db}
-// }
