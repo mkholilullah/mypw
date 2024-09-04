@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/roamercodes/mypw/config"
 	"github.com/roamercodes/mypw/handler"
 	"github.com/roamercodes/mypw/repository"
@@ -20,10 +21,13 @@ func main() {
 	// inisialisasi HTTP Handler
 	userHandler := handler.NewUserHandler(userUsecase)
 
+	// inisialisasi router
+	r := mux.NewRouter()
+
 	// Routing HTTP
-	http.HandleFunc("/users", userHandler.GetUserById)
-	http.HandleFunc("/user/create", userHandler.CreateUser)
+	r.HandleFunc("/user/{id}", userHandler.GetUserById).Methods("GET")
+	r.HandleFunc("/user/create", userHandler.CreateUser).Methods("POST")
 
 	log.Println("Server running on :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
