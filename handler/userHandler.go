@@ -2,9 +2,11 @@ package handler
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/roamercodes/mypw/domain"
 	"github.com/roamercodes/mypw/usecase"
 )
@@ -20,15 +22,23 @@ func NewUserHandler(uc *usecase.UserUsecase) *UserHandler {
 }
 
 func (h *UserHandler) GetUserById(w http.ResponseWriter, r *http.Request) {
-	idParam := r.URL.Query().Get("id")
-	id, _ := strconv.Atoi(idParam)
+	log.Println("GetUserByID called") // Tambahkan log ini untuk memastikan handler dipanggil
+	vars := mux.Vars(r) // get url variable
+	idParam := vars["id"]
 
-	user, err := h.UseCase.GetUserById(id)
+	id, err := strconv.Atoi(idParam) 
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	user, err := h.UseCase.GetUserById(int(id))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(user)
 }
 
