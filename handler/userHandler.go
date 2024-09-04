@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -22,7 +21,6 @@ func NewUserHandler(uc *usecase.UserUsecase) *UserHandler {
 }
 
 func (h *UserHandler) GetUserById(w http.ResponseWriter, r *http.Request) {
-	log.Println("GetUserByID called") // Tambahkan log ini untuk memastikan handler dipanggil
 	vars := mux.Vars(r) // get url variable
 	idParam := vars["id"]
 
