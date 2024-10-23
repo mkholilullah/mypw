@@ -44,11 +44,13 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user domain.User
 	json.NewDecoder(r.Body).Decode(&user)
 
-	err := h.UseCase.CreateUser(&user)
+	createdUser, err := h.UseCase.CreateUser(&user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(createdUser)
 }

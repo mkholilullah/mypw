@@ -1,0 +1,45 @@
+project-name/
+│
+├── cmd/
+│   └── app/
+│       └── main.go               # Entry point aplikasi
+│
+├── internal/
+│   ├── domain/                   # Definisi entitas dan interface
+│   ├── repository/               # Implementasi repositori menggunakan GORM
+│   ├── usecase/                  # Logika bisnis dan use case
+│   └── delivery/
+│       └── http/                 # HTTP handler dan routing
+│
+├── go.mod                        # File modul Go
+└── go.sum                        # Checksum dependencies
+
+------------------------------------------------------------------------------
+
+project-name/
+│
+├── main.go                   # Entry point aplikasi
+│
+├── config/    
+├── domain/                   # Definisi entitas dan interface              
+├── repository/               # Implementasi repositori menggunakan GORM
+├── usecase/                  # Logika bisnis dan use case
+├── handler/                  # HTTP handler dan routing
+│
+├── go.mod                    # File modul Go
+└── go.sum                    # Checksum dependencies
+
+------------------------------------------------------------------------------
+
+project-name/
+│
+├── main.go                   # Entry point aplikasi
+│
+├── modules/    
+├── domain/                   # Definisi entitas dan interface              
+├── repository/               # Implementasi repositori menggunakan GORM
+├── usecase/                  # Logika bisnis dan use case
+├── handler/                  # HTTP handler dan routing
+│
+├── go.mod                    # File modul Go
+└── go.sum                    # Checksum dependencies

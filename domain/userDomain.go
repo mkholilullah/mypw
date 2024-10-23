@@ -13,3 +13,8 @@ type UserRepository interface {
 	GetById(id int) (*User, error)
 	Create(user *User) error
 }
+
+type UserUseCase interface {
+	Register(user *User) (*User, error)
+	Login(username, password string) (*User, error)
+}
