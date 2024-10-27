@@ -1,17 +1,18 @@
 package domain
 
 type User struct {
-	ID       int
-	Name     string
-	Username string
-	Email    string
-	Password string
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 // UserRepository adalah interface untuk layer repository
 type UserRepository interface {
 	GetById(id int) (*User, error)
 	Create(user *User) error
+	GetByUserName(username string) (*User, error)
 }
 
 type UserUseCase interface {

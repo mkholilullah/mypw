@@ -54,3 +54,18 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(createdUser)
 }
+
+func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
+	// catatan error need (*)
+	var user *domain.User
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		http.Error(w, "Invalid Input", http.StatusBadRequest)
+		return
+	}
+
+	user, err := h.UseCase.LoginUser(user.Username, user.Password)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+}

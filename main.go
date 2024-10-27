@@ -27,6 +27,7 @@ func main() {
 	// Routing HTTP
 	r.HandleFunc("/user/{id}", userHandler.GetUserById).Methods("GET")
 	r.HandleFunc("/user/register", userHandler.CreateUser).Methods("POST")
+	r.HandleFunc("/user/login", userHandler.Login).Methods("POST")
 
 	log.Println("Server running on :8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
