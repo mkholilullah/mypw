@@ -8,6 +8,7 @@ type User struct {
 	Password string `json:"password"`
 }
 
+// pindah interfacenya karena murtad
 // UserRepository adalah interface untuk layer repository
 type UserRepository interface {
 	GetById(id int) (*User, error)

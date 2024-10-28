@@ -1,34 +1,41 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"github.com/roamercodes/mypw/config"
-	"github.com/roamercodes/mypw/handler"
-	"github.com/roamercodes/mypw/repository"
-	"github.com/roamercodes/mypw/usecase"
 )
 
 func main() {
-	db := config.Connect()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf(" Error loading .env files : %v", err)
+	}
 
-	// inisialisasi repository dan usecase
-	userRepo := repository.NewUserRepository(db)
-	userUsecase := usecase.NewUserUsecase(userRepo)
+	conf := config.GetConfig()
+	conn := config.InitDatabasePostgres(&conf)
+	config.AutoMigrate(conn)
 
-	// inisialisasi HTTP Handler
-	userHandler := handler.NewUserHandler(userUsecase)
+	fmt.Printf("Server starting at localhost:%v ...\n", conf.Port)
+	err = http.ListenAndServe(fmt.Sprintf(":%v", conf.Port), routeInit(conn))
+	if err != nil {
+		log.Fatalf("Error starting server : %v", err)
+	}
 
-	// inisialisasi router
-	r := mux.NewRouter()
+	// db := config.Connect()
+	// userRepo := repository.NewUserRepository(db)
+	// userUsecase := usecase.NewUserUsecase(userRepo)
 
-	// Routing HTTP
-	r.HandleFunc("/user/{id}", userHandler.GetUserById).Methods("GET")
-	r.HandleFunc("/user/register", userHandler.CreateUser).Methods("POST")
-	r.HandleFunc("/user/login", userHandler.Login).Methods("POST")
+	// userHandler := handler.NewUserHandler(userUsecase)
 
-	log.Println("Server running on :8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	// r := mux.NewRouter()
+
+	// r.HandleFunc("/user/{id}", userHandler.GetUserById).Methods("GET")
+	// r.HandleFunc("/user/register", userHandler.CreateUser).Methods("POST")
+	// r.HandleFunc("/user/login", userHandler.Login).Methods("POST")
+	// log.Println("Server running on :8080")
+	// log.Fatal(http.ListenAndServe(":8080", r))
 }
